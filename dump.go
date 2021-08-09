@@ -30,7 +30,7 @@ import (
 	"sort"
 	"strings"
 
-	"gitlab.com/c0b/go-ordered-json"
+	"github.com/openshift-online/ocm-sdk-go/internal"
 
 	"github.com/openshift-online/ocm-sdk-go/logging"
 )
@@ -269,7 +269,7 @@ func (d *dumpRoundTripper) dumpForm(ctx context.Context, data []byte) {
 // dumpJSON tries to parse the given data as a JSON document. If that works, then it dumps it
 // indented, otherwise dumps it as is.
 func (d *dumpRoundTripper) dumpJSON(ctx context.Context, data []byte) {
-	parsed := ordered.NewOrderedMap()
+	parsed := internal.NewOrderedMap()
 	err := json.Unmarshal(data, parsed)
 	if err != nil {
 		d.logger.Debug(ctx, "%s", data)
@@ -292,7 +292,7 @@ func (d *dumpRoundTripper) dumpBytes(ctx context.Context, data []byte) {
 }
 
 // redactSensitive replaces sensitive fields within a response with redactionStr.
-func (d *dumpRoundTripper) redactSensitive(body *ordered.OrderedMap) {
+func (d *dumpRoundTripper) redactSensitive(body *internal.OrderedMap) {
 	iterator := body.EntriesIter()
 	for {
 		pair, ok := iterator()
